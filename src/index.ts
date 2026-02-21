@@ -199,6 +199,7 @@ export interface CoreEventMap {
   // Calendar module
   'calendar:add-event': { ical: string };
   'calendar:event-added': { eventId: string };
+  'calendar:send-invite': { to: string[]; subject: string; icalData: string };
 
   // Contacts module
   'contacts:pick': { returnEvent: string; multiple?: boolean };
@@ -368,6 +369,7 @@ export const Events = {
   // Calendar module
   CALENDAR_ADD_EVENT:       'calendar:add-event',
   CALENDAR_EVENT_ADDED:     'calendar:event-added',
+  CALENDAR_SEND_INVITE:     'calendar:send-invite',
 
   // Contacts module (module-contacts)
   CONTACTS_PICK:            'contacts:pick',
