@@ -116,28 +116,41 @@ export interface FuzzyPeanutSDK {
 
 // ─── Runtime ─────────────────────────────────────────────────────────────────
 
+const GLOBAL_KEY = '__fuzzyPeanutSDK';
+
 let _sdk: FuzzyPeanutSDK | undefined;
 
 /**
  * Called once by the shell to inject the SDK instance.
+ * The shell also exposes it on window so dynamically loaded modules
+ * (which may have their own copy of this package) can resolve the singleton.
  * Modules never call this directly.
  */
 export function initSDK(sdk: FuzzyPeanutSDK): void {
   _sdk = sdk;
+  if (typeof window !== 'undefined') {
+    (window as unknown as Record<string, unknown>)[GLOBAL_KEY] = sdk;
+  }
 }
 
 /**
- * Get the SDK instance. Throws if called outside the FuzzyPeanut shell
- * (i.e. before initSDK has been called).
+ * Get the SDK instance. Falls back to the window global so modules loaded
+ * as separate ES bundles (not bundled with the shell) still get the same instance.
+ * Throws if called outside the FuzzyPeanut shell.
  */
 export function getSDK(): FuzzyPeanutSDK {
-  if (!_sdk) {
-    throw new Error(
-      '[FuzzyPeanut] SDK not initialized. ' +
-      'Ensure this module is running inside the FuzzyPeanut shell.'
-    );
+  if (_sdk) return _sdk;
+  if (typeof window !== 'undefined') {
+    const global = (window as unknown as Record<string, unknown>)[GLOBAL_KEY];
+    if (global) {
+      _sdk = global as FuzzyPeanutSDK;
+      return _sdk;
+    }
   }
-  return _sdk;
+  throw new Error(
+    '[FuzzyPeanut] SDK not initialized. ' +
+    'Ensure this module is running inside the FuzzyPeanut shell.'
+  );
 }
 
 // ─── Convenience Accessors ───────────────────────────────────────────────────
