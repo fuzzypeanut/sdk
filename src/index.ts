@@ -216,7 +216,8 @@ export interface CoreEventMap {
   'calendar:events-for-contact': { events: { id: string; title: string; start: string; end?: string }[] };
 
   // Office module
-  'office:open': { wopiUrl: string; fileName: string };
+  'office:open': { fileId: string; fileName: string };
+  'office:closed': { fileId: string; saved: boolean };
 }
 
 // ─── SDK Interface ────────────────────────────────────────────────────────────
@@ -387,4 +388,5 @@ export const Events = {
 
   // Office module
   OFFICE_OPEN:              'office:open',
+  OFFICE_CLOSED:            'office:closed',
 } as const;
