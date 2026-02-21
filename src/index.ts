@@ -216,8 +216,8 @@ export interface CoreEventMap {
   'calendar:events-for-contact': { events: { id: string; title: string; start: string; end?: string }[] };
 
   // Office module
-  'office:open': { fileId: string; fileName: string };
-  'office:closed': { fileId: string; saved: boolean };
+  'office:open': { fileUrl: string; fileName: string };
+  'office:closed': { fileUrl: string; saved: boolean };
 }
 
 // ─── SDK Interface ────────────────────────────────────────────────────────────
