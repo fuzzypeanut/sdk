@@ -206,6 +206,14 @@ export interface CoreEventMap {
   'contacts:get': { email: string; returnEvent: string };
   'contacts:found': { contact: ContactRef | null };
 
+  // Contacts ↔ Mail timeline
+  'mail:get-threads': { email: string; returnEvent: string; limit?: number };
+  'mail:threads-for-contact': { threads: { id: string; subject: string; receivedAt: string; preview: string }[] };
+
+  // Contacts ↔ Calendar timeline
+  'calendar:get-events-for-contact': { email: string; returnEvent: string; limit?: number };
+  'calendar:events-for-contact': { events: { id: string; title: string; start: string; end?: string }[] };
+
   // Office module
   'office:open': { wopiUrl: string; fileName: string };
 }
@@ -366,6 +374,14 @@ export const Events = {
   CONTACTS_PICKED:          'contacts:picked',
   CONTACTS_GET:             'contacts:get',
   CONTACTS_FOUND:           'contacts:found',
+
+  // Contacts ↔ Mail timeline
+  MAIL_GET_THREADS:                   'mail:get-threads',
+  MAIL_THREADS_FOR_CONTACT:           'mail:threads-for-contact',
+
+  // Contacts ↔ Calendar timeline
+  CALENDAR_GET_EVENTS_FOR_CONTACT:    'calendar:get-events-for-contact',
+  CALENDAR_EVENTS_FOR_CONTACT:        'calendar:events-for-contact',
 
   // Office module
   OFFICE_OPEN:              'office:open',
